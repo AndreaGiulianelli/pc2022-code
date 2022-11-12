@@ -19,7 +19,7 @@ object PetriNet:
         if m disjoined inh          // check inhibition
         out <- m extract cond       // remove precondition
       yield out union eff           // add effect
-//    pn.flatMap(trn => (m extract trn.cond).map(out => out union trn.eff))
+//    pn.flatMap(trn => (m extract trn.cond).map(out => out union trn.eff)) // N.B. Option è un IterableOnce e flatMap vuole un IterableOnce
 
 
 
