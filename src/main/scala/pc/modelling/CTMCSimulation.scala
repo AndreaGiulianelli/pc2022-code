@@ -23,3 +23,22 @@ object CTMCSimulation:
           val choice = Stochastics.draw(next)(using rnd)
           Event(t + Math.log(1 / rnd.nextDouble()) / sumR, choice)
       }
+
+    def averageTimeToState(using numberOfRuns: Int, rnd: Random)(initial:S, to: S): Double =
+      val times = (1 to numberOfRuns)
+        .map(_ => self.newSimulationTrace(initial, rnd))
+        .map(_.timeToState(to)).filter(_.isDefined)
+      times.map(_.get).sum / times.size
+
+  extension [S](trace: Trace[S])
+    /**
+     * Get the time to reach the state the first time.
+     * It consider the initial state as the start
+     * @param state state to reach.
+     */
+    def timeToState(state: S, maxElements: Int = 200, maxTime: Double = 100): Option[Double] =
+      trace.take(maxElements).takeWhile(_.time <= maxTime).filter(_.state == state) match
+        case l if l.isEmpty || l.last.time >= maxTime => None
+        case l => Some(l.head.time)
+
+
