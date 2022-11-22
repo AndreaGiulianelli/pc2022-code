@@ -24,11 +24,11 @@ object CTMCSimulation:
           Event(t + Math.log(1 / rnd.nextDouble()) / sumR, choice)
       }
 
-    def averageTimeToState(using numberOfRuns: Int, rnd: Random)(initial:S, to: S): Double =
+    def averageTimeToState(using numberOfRuns: Int, rnd: Random)(initial:S, to: S): Option[Double] =
       val times = (1 to numberOfRuns)
         .map(_ => self.newSimulationTrace(initial, rnd))
         .map(_.timeToState(to)).filter(_.isDefined)
-      times.map(_.get).sum / times.size
+      Some(times.map(_.get).sum).filter(_ != 0).map(_ / times.size)
 
   extension [S](trace: Trace[S])
     /**
