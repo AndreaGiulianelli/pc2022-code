@@ -87,12 +87,12 @@ class Main7 extends AggregateProgramSkeleton {
 object Demo7 extends Simulation[Main7]
 
 class Main8 extends AggregateProgramSkeleton {
-  override def main() = minHoodPlus(nbrRange)
+  override def main() = (mid(), minHoodPlus((nbrRange,nbr(mid()))))
 }
 object Demo8 extends Simulation[Main8]
 
 class Main9 extends AggregateProgramSkeleton {
-  override def main() = rep(0){_+1}
+  override def main() = mux(sense1){rep(0){20000 min _ + 1}}{0}
 }
 object Demo9 extends Simulation[Main9]
 
@@ -109,7 +109,7 @@ object Demo11 extends Simulation[Main11]
 class Main12 extends AggregateProgramSkeleton {
   import Builtins.Bounded.of_i
 
-  override def main() = maxHoodPlus(boolToInt(nbr{sense1}))
+  override def main() = foldhood(Set[ID]())(_ ++ _){nbr{Set(mid())}}
 }
 object Demo12 extends Simulation[Main12]
 
@@ -121,7 +121,7 @@ object Demo13 extends Simulation[Main13]
 class Main14 extends AggregateProgramSkeleton {
   import Builtins.Bounded.of_i
 
-  override def main() = rep(0){ x => boolToInt(sense1) max maxHoodPlus( nbr{x}) }
+  override def main() = rep(0){ x => mid() max maxHoodPlus( nbr{x}) }
 }
 object Demo14 extends Simulation[Main14]
 
@@ -131,6 +131,6 @@ class Main15 extends AggregateProgramSkeleton {
 object Demo15 extends Simulation[Main15]
 
 class Main16 extends AggregateProgramSkeleton {
-  override def main() = rep(Double.MaxValue){ d => mux[Double](sense1){0.0}{minHoodPlus(nbr{d}+nbrRange)} }
+  override def main() = rep(Double.MaxValue){ d => mux[Double](sense1){0.0}{minHoodPlus(nbr{d}+nbrRange) * mux(sense2){5}{1}}}
 }
 object Demo16 extends Simulation[Main16]
