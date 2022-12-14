@@ -46,10 +46,10 @@ object QMatrix:
       qSystem, gamma, alpha, epsilon, qFunction
     )
 
-    def show[E](v: Node => E, formatString: String): String =
+    def show[E](v: Node => E, formatString: String, highlight: Set[Node] = Set.empty): String =
       (for
         y <- 0 until height
         x <- 0 until width
-        s1 = formatString.format(v((x, y)))
+        s1 = if !highlight.contains((x, y)) then formatString.format(v((x, y))) else " . "
         s2 = if x == width - 1 then "\n" else "\t"
       yield s1 + s2).mkString("")
